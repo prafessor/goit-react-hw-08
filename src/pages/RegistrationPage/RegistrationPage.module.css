@@ -1,0 +1,27 @@
+.section {
+  max-width: 1240px;
+  padding: 20px 5px;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 340px;
+  border-radius: 15px;
+  padding: 30px 20px;
+
+  background-color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0 0 15px;
+}

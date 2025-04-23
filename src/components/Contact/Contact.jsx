@@ -1,5 +1,8 @@
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps";
+import {
+  setSelectedContact,
+  setModalDeleteOpen,
+} from "../../redux/contacts/slice";
 import { BsPersonFill, BsTelephoneFill } from "react-icons/bs";
 import css from "./Contact.module.css";
 
@@ -7,7 +10,8 @@ export default function Contact({ contact }) {
   const dispatch = useDispatch();
 
   const handleDeleteBtnClick = () => {
-    dispatch(deleteContact(contact.id));
+    dispatch(setSelectedContact(contact));
+    dispatch(setModalDeleteOpen(true));
   };
 
   return (
@@ -20,7 +24,7 @@ export default function Contact({ contact }) {
 
         <span className={css.item}>
           <BsTelephoneFill className={css.icon} />
-          {contact.phone}
+          {contact.number}
         </span>
       </div>
 

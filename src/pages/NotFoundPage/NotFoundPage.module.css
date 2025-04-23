@@ -1,0 +1,22 @@
+.container {
+  max-width: 1240px;
+  padding: 100px 15px;
+  margin: auto;
+
+  text-align: center;
+}
+
+.error {
+  margin: 15px 0;
+}
+
+.title {
+  margin-bottom: 5px;
+
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.message {
+  font-size: 14px;
+}

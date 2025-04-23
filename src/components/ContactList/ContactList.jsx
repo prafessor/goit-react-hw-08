@@ -3,7 +3,7 @@ import {
   selectLoading,
   selectError,
   selectFilteredContacts,
-} from "../../redux/contactsSlice";
+} from "../../redux/contacts/selectors";
 import MoonLoader from "react-spinners/MoonLoader";
 import Contact from "../Contact/Contact";
 import css from "./ContactList.module.css";

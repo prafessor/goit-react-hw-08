@@ -1,6 +1,12 @@
-.wrapper {
+.form {
   width: 300px;
 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wrapper {
   display: flex;
   flex-direction: column;
 }
@@ -23,16 +29,10 @@
 .label {
   padding: 0 3px;
 
-  position: absolute;
-  transform: translate(30px, 6px);
-
-  transition: 250ms ease-in-out;
-}
-
-.input_wrapper input:focus + .label,
-.input_wrapper input:valid + .label {
-  transform: translate(23px, -11px);
   background-color: #ffffff;
+
+  position: absolute;
+  transform: translate(23px, -11px);
 }
 
 .icon {

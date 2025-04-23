@@ -1,7 +1,8 @@
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
+import { BsPersonFill, BsTelephoneFill } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useId } from "react";
+import { useId, useRef } from "react";
 import * as Yup from "yup";
 import css from "./ContactForm.module.css";
 
@@ -11,7 +12,7 @@ const addSchema = Yup.object().shape({
     .min(3, "Name must be min 3 sumbols")
     .max(50, "Name must be max 50 sumbols")
     .required("Field name is required"),
-  phone: Yup.string()
+  number: Yup.string()
     .matches(
       /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/,
       "Number is invalid"
@@ -20,49 +21,65 @@ const addSchema = Yup.object().shape({
 });
 
 // Adding new contact function
-export default function ContactForm() {
+export default function ContactForm({ onClose }) {
   const dispatch = useDispatch();
+  const inputNameRef = useRef(null);
+  const inputNumberRef = useRef(null);
 
   const formId = useId();
 
   const handleFormSubmit = (values, actions) => {
     dispatch(addContact(values));
 
+    inputNameRef.current.blur();
+    inputNumberRef.current.blur();
     actions.resetForm();
+    onClose();
   };
 
   return (
     <Formik
-      initialValues={{ name: "", phone: "" }}
+      initialValues={{ name: "", number: "" }}
       validationSchema={addSchema}
       onSubmit={handleFormSubmit}
     >
       <Form className={css.wrapper}>
-        <label className={css.label} htmlFor={formId + "-name"}>
-          Name
-        </label>
-        <Field
-          className={css.input}
-          type="text"
-          name="name"
-          id={formId + "-name"}
-        />
-        <span className={css.err}>
-          <ErrorMessage className={css.error} name="name" />
-        </span>
+        <p className={css.title}>Add contact</p>
+        <div className={css.input_wrapper}>
+          <BsPersonFill className={css.icon} />
+          <Field
+            className={css.input}
+            type="text"
+            name="name"
+            id={formId + "-name"}
+            innerRef={inputNameRef}
+            required
+          />
+          <label className={css.label} htmlFor={formId + "-name"}>
+            Name
+          </label>
+          <span className={css.err}>
+            <ErrorMessage className={css.error} name="name" />
+          </span>
+        </div>
 
-        <label className={css.label} htmlFor={formId + "-phone"}>
-          Number
-        </label>
-        <Field
-          className={css.input}
-          type="tel"
-          name="phone"
-          id={formId + "-phone"}
-        />
-        <span className={css.err}>
-          <ErrorMessage className={css.error} name="phone" />
-        </span>
+        <div className={css.input_wrapper}>
+          <BsTelephoneFill className={css.icon} />
+          <Field
+            className={css.input}
+            type="tel"
+            name="number"
+            id={formId + "-number"}
+            innerRef={inputNumberRef}
+            required
+          />
+          <label className={css.label} htmlFor={formId + "-number"}>
+            Number
+          </label>
+          <span className={css.err}>
+            <ErrorMessage className={css.error} name="number" />
+          </span>
+        </div>
 
         <button className={css.btn_submit} type="submit">
           Add contact

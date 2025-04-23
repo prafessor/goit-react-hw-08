@@ -1,34 +1,58 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "../../redux/contactsOps";
-import { selectAddingSuccess } from "../../redux/contactsSlice";
-import toast, { Toaster } from "react-hot-toast";
-import ContactList from "../ContactList/ContactList";
-import SearchBox from "../SearchBox/SearchBox";
+import { selectIsRefreshing } from "../../redux/auth/selectors";
+import { refreshUser } from "../../redux/auth/operations";
+import { Routes, Route } from "react-router-dom";
+import MoonLoader from "react-spinners/MoonLoader";
+import HomePage from "../../pages/HomePage/HomePage";
+import ContactsPage from "../../pages/ContactsPage/ContactsPage";
+import RegistrationPage from "../../pages/RegistrationPage/RegistrationPage";
+import LoginPage from "../../pages/LoginPage/LoginPage";
 import css from "./App.module.css";
-import ContactForm from "../ContactForm/ContactForm";
+import AppBar from "../AppBar/AppBar";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import RestrictedRoute from "../RestrictedRoute/RestrictedRoute";
+import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 
 export default function App() {
   const dispatch = useDispatch();
-  const addingSuccess = useSelector(selectAddingSuccess);
+  const isRefreshing = useSelector(selectIsRefreshing);
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (addingSuccess) {
-      toast.success("Success adding contact");
-    }
-  }, [addingSuccess]);
+  return isRefreshing ? (
+    <MoonLoader className={css.loader} />
+  ) : (
+    <>
+      <AppBar />
 
-  return (
-    <div className={css.container}>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      <ContactList />
-      <Toaster />
-    </div>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                page={<RegistrationPage />}
+                redirect="/contacts"
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute page={<LoginPage />} redirect="/contacts" />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={<PrivateRoute page={<ContactsPage />} redirect="/login" />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 }

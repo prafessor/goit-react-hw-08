@@ -1,20 +1,6 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
-import { selectNameFilter } from "./filtersSlice";
-
-export const selectContacts = (state) => state.contacts.items;
-export const selectLoading = (state) => state.contacts.loading;
-export const selectError = (state) => state.contacts.error;
-export const selectAddingSuccess = (state) => state.contacts.addingSuccess;
-
-export const selectFilteredContacts = createSelector(
-  [selectContacts, selectNameFilter],
-  (contacts, filterName) => {
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filterName.toLowerCase())
-    );
-  }
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchContacts, addContact, deleteContact } from "./operations";
+import { logout } from "../auth/operations";
 
 const handleRejected = (state, action) => {
   state.loading = false;
@@ -28,6 +14,17 @@ const slice = createSlice({
     loading: false,
     error: null,
     addingSuccess: false,
+    deletingSuccess: false,
+    selectedContact: null,
+    modalDeleteOpen: false,
+  },
+  reducers: {
+    setSelectedContact: (state, action) => {
+      state.selectedContact = action.payload;
+    },
+    setModalDeleteOpen: (state, action) => {
+      state.modalDeleteOpen = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -42,6 +39,7 @@ const slice = createSlice({
       .addCase(fetchContacts.rejected, handleRejected)
       .addCase(addContact.pending, (state) => {
         state.error = null;
+        state.deletingSuccess = false;
         state.addingSuccess = false;
       })
       .addCase(addContact.fulfilled, (state, action) => {
@@ -52,15 +50,24 @@ const slice = createSlice({
       .addCase(addContact.rejected, handleRejected)
       .addCase(deleteContact.pending, (state) => {
         state.error = null;
+        state.addingSuccess = false;
+        state.deletingSuccess = false;
+        state.selectedContact = null;
+        state.modalDeleteOpen = false;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
         state.items = state.items.filter(
           (contact) => contact.id !== action.payload.id
         );
+        state.deletingSuccess = true;
       })
-      .addCase(deleteContact.rejected, handleRejected);
+      .addCase(deleteContact.rejected, handleRejected)
+      .addCase(logout.fulfilled, (state) => {
+        state.items = [];
+      });
   },
 });
 
+export const { setSelectedContact, setModalDeleteOpen } = slice.actions;
 export default slice.reducer;
