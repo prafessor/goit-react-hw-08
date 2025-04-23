@@ -1,0 +1,32 @@
+.title_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.list {
+  padding: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wrapper {
+  width: 300px;
+  padding: 10px;
+
+  background-color: #f6f6f6;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loader {
+  margin: 100px auto;
+}

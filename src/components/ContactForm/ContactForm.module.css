@@ -1,0 +1,49 @@
+.wrapper {
+  width: 300px;
+  margin-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 5px;
+}
+
+.input {
+  height: 30px;
+  margin-bottom: 2px;
+  padding-left: 10px;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.btn_submit {
+  height: 30px;
+  border: none;
+
+  background-color: #f6f6f6;
+
+  color: #494949;
+
+  cursor: pointer;
+  transition: opacity 250ms ease;
+}
+
+.btn_submit:hover {
+  opacity: 0.5;
+}
+
+.err {
+  margin-bottom: 7px;
+
+  color: #de3535;
+  height: 10px;
+  font-size: 12px;
+}
+
+.err:last-of-type {
+  margin-bottom: 15px;
+}

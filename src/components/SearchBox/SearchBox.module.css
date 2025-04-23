@@ -1,0 +1,41 @@
+.wrapper {
+  margin-bottom: 40px;
+}
+
+.title {
+  margin: 5px 0;
+}
+
+.field_wrapper {
+  display: flex;
+}
+
+.field {
+  width: 300px;
+  height: 30px;
+  border: 1px solid #494949;
+  padding-left: 10px;
+
+  color: inherit;
+}
+
+.field:focus {
+  outline: none;
+}
+
+.btn_reset {
+  width: 70px;
+  height: 30px;
+  border: none;
+
+  background-color: #f6f6f6;
+
+  color: #494949;
+
+  cursor: pointer;
+  transition: opacity 250ms ease;
+}
+
+.btn_reset:hover {
+  opacity: 0.5;
+}
